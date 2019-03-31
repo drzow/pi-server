@@ -2,11 +2,9 @@
 # Get command line arguments
 REPOSITORY=$1
 OPEMAIL=$2
-GITNAME=$3
-GITEMAIL=$4
 
-if [ -z "$GITEMAIL" ]; then
-  echo "Usage: $0 <1PasswordRepo> <1PasswordEmail> <GitName> <GitEmail>"
+if [ -z "${OPEMAIL}" ]; then
+  echo "Usage: $0 <1PasswordRepo> <1PasswordEmail>"
   exit 1
 fi
 
@@ -30,10 +28,12 @@ SESSIONTOKEN=$(op signin ${REPOSITORY}.1password.com ${OPEMAIL} --output=raw)
 # Get the password from 1Password
 PIPASSWD=$(op get item Nextcloud --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.name == "") | .fields | .[] | select(.n == "password") | .v' | sed -e 's/^"//' -e 's/"$//')
 # Set it
-sudo chpasswd pi:$PIPASSWD
+echo pi:${PIPASSWD} | sudo chpasswd
 
 # Finish setting up git
-# TODO: Get these from 1Password
+GITEMAIL=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Additional Info") | .fields | .[] | select(.t == "email") | .v' | sed -e 's/^"//' -e 's/"$//')
+GITNAME=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Additional Info") | .fields | .[] | select(.t == "name") | .v' | sed -e 's/^"//' -e 's/"$//')
+GITTOKEN=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Additional Info") | .fields | .[] | select(.t == "token") | .v' | sed -e 's/^"//' -e 's/"$//')
 git config --global user.email "${GITEMAIL}"
 git config --global user.name "${GITNAME}"
 git config credential.helper store
