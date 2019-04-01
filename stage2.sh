@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Get command line arguments
 REPOSITORY=$1
 OPEMAIL=$2
@@ -31,12 +31,27 @@ PIPASSWD=$(op get item Nextcloud --session=$SESSIONTOKEN | jq '.details.sections
 echo pi:${PIPASSWD} | sudo chpasswd
 
 # Finish setting up git
+GITUSER=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.fields | .[] | select(.name == "username") | .value' | sed -e 's/^"//' -e 's/"$//')
 GITEMAIL=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Additional Info") | .fields | .[] | select(.t == "email") | .v' | sed -e 's/^"//' -e 's/"$//')
 GITNAME=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Additional Info") | .fields | .[] | select(.t == "name") | .v' | sed -e 's/^"//' -e 's/"$//')
 GITTOKEN=$(op get item GitHub --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Additional Info") | .fields | .[] | select(.t == "token") | .v' | sed -e 's/^"//' -e 's/"$//')
 git config --global user.email "${GITEMAIL}"
 git config --global user.name "${GITNAME}"
 git config credential.helper store
+GITURL=$(git remote get-url --push origin)
+# From https://stackoverflow.com/questions/6174220/parse-url-in-shell-script
+# extract the protocol
+GITPROTO="$(echo ${GITURL} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+# remove the protocol
+GITREMAIN="${GITURL/$GITPROTO/}"
+# extract the user (if any)
+GITURLUSER="$(echo ${GITREMAIN} | grep @ | cut -d@ -f1)"
+# extract the host
+GITHOST="$(echo ${GITREMAIN/$GITURLUSER@/} | cut -d/ -f1)"
+# extract the path (if any)
+GITPATH="$(echo ${GITREMAIN} | grep / | cut -d/ -f2-)"
+NEWGITURL="https://${GITUSER}:${GITTOKEN}@${GITHOST}/${GITPATH}"
+git push -n ${NEWGITURL}
 
 # Install docker
 # Mount the data drive
