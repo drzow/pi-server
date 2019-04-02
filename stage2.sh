@@ -53,9 +53,15 @@ GITPATH="$(echo ${GITREMAIN} | grep / | cut -d/ -f2-)"
 NEWGITURL="https://${GITUSER}:${GITTOKEN}@${GITHOST}/${GITPATH}"
 git push -n ${NEWGITURL}
 
-# Install docker
-# Mount the data drive
-# Download nextcloud docker image
-# Run nextcloud docker image
-# Download plex docker image
-# Run plex docker image
+# Install lvm and stuff docker will want
+sudo apt -y install btrfs-tools debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2
+
+# Install Docker
+curl -sSL get.docker.com | sh
+
+# Add pi to the docker group
+sudo usermod -a -G docker pi
+
+# Reboot so kernel modules for docker and lvm will run
+sudo reboot
+
