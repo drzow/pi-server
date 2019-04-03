@@ -4,4 +4,4 @@ sudo touch /boot/ssh
 
 # Fix the keyboard layout
 sudo cp keyboard /etc/default
-reboot
+sudo reboot
