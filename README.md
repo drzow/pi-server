@@ -61,8 +61,25 @@ Steps:
    a bunch of supporting packages, then reboot the pi again.
 10. `ssh pi@$PIIP`
 11. `cd pi-server`
-12. `./stage3.sh` This will mount the USB drive then pull and run the
-    Nextcloud and Plex docker images.
-13. You can now go to https://$PIIP:4443 to set up NextCloudPi.
-14. TODO: Setup Plex paths
-15. TODO: Setup Plex
+12. `./stage3.sh <User>` This will mount the USB drive then pull and run the
+    Nextcloud and Plex docker images. <User> should be the username of the
+    regular NextCloud user you created or will create (in the next step)
+    whose account will hold all of your Plex media.
+13. If you previously set up NextCloud, stage 4 will run for you
+    automatically, launch plex, and you are done! Otherwise, you can
+    now go to https://$PIIP:4443 to set up NextCloudPi. Create a
+    regular user, then log in as them, create a `Media` folder
+    from your top-level page (so you should see it between the
+    default `Documents` and `Photos` directories if you do not touch
+    those). Go into the `Media` folder and create a `Plex` folder.
+    Go into the `Plex` folder and create four folders:
+    - `Config`
+    - `Movies`
+    - `Transcoding`
+    - `TV`
+    You can start populating the Movies and TV folders with material
+    as you see fit.
+15. If you just configured your folders, you will need to run
+    `./stage4.sh <User>`, which will launch Plex.
+16. Enjoy!
+
