@@ -12,15 +12,30 @@ fi
 
 # Download nextcloud docker image
 docker pull ownyourbits/nextcloudpi-armhf
-# Run nextcloud docker image
+# Create nextcloud docker image
 IP=$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
+if ! docker ps -a | grep nextcloudpi-armhf; then
+  docker create -d -p 4443:4443 -p 443:443 -p 80:80 -v /mnt/usbdrive:/data \
+    --name nextcloudpi --restart unless-stopped ownyourbits/nextcloudpi-armhf ${IP}
+fi
+# Start nextcloud docker image
 if ! docker ps | grep nextcloudpi-armhf; then
-  docker run -d -p 4443:4443 -p 443:443 -p 80:80 -v /mnt/usbdrive:/data --name nextcloudpi --restart unless-stopped ownyourbits/nextcloudpi-armhf ${IP}
+  docker start nextcloudpi
 fi
 
 # Download plex docker image
 docker pull linuxserver/plex
-# Run plex docker image
-if ! docker ps | grep plex; then
-  docker run --name=plex --net=host -e PUID=33 -e PGID=33 -e VERSION=docker -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/Config:/config -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/TV:/data/tvshows -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/Movies:/data/movies -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/Transcoding:/transcode --restart unless-stopped linuxserver/plex
+# Create plex docker image
+if ! docker ps -a | grep plex; then
+  docker run -d --name=plex --net=host -e PUID=33 -e PGID=33 -e VERSION=docker \
+    -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/Config:/config \
+    -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/TV:/data/tvshows \
+    -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/Movies:/data/movies \
+    -v /mnt/usbdrive/nextcloud/data/zow/files/Media/Plex/Transcoding:/transcode \
+    --restart unless-stopped linuxserver/plex
 fi
+# Start plex docker image
+if ! docker ps | grep plex; then
+  docker start plex
+fi
+
