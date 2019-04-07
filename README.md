@@ -27,10 +27,24 @@ Dependencies / Assumptions:
    scripts. If others are not interested in that, it could be made
    optional.
 7. The USB Drive is set up ahead of time as a LVM volume with a
-   volume group called `nc-data`, a logical volume called `lv-data`
+   volume group called `nc_data`, a logical volume called `lv_data`
    and then formatted with a BTRFS file system.
-   TODO: Provide more details on this step.
+   1. `sudo fdisk /dev/sda` (or whatever the block device is for your
+      drive -- you can also use the /dev/disk/by-id/<ID> or any equalvalent
+      path.
+   2. If necessary, create the partition: `n`, `p`, `1`, `<Enter>`,
+      `<Enter>`
+   3. Set the partition type to Linux LVM: `t`, `8e`
+   4. Write the updated partition table: `w`
+   5. Make the partition an LVM physical volume: `sudo pvcreate /dev/sda1`
+   6. Create the volume group: `sudo vgcreate nc_data /dev/sda1`
+   7. Create the logical volume:
+      `sudo lvcreate --extents 100%FREE --name lv_data nc_data`
+   8. Create the BTR file system on it:
+      `sudo mkfs.btrfs /dev/nc_data/lv_data`
+
 --
+
 Steps:
 1. Boot your pi from a fresh image. These scripts were developed under
    Rasperian, 2018-11-13 version.
