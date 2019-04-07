@@ -44,11 +44,11 @@ Steps:
 3. `sudo apt -y install git`
 4. `git clone https://github.com/drzow/pi-server.git` (or your fork
    thereof)
-5. `cd pi-server`
+5. `cd pi-server/shell`
 6. `./stage1.sh` This will reboot your pi.
 7. If you did not set up ssh back in step (2), you should do so now, then
    `ssh pi@$PIIP`
-8. `cd pi-server`
+8. `cd pi-server/shell`
 9. `./stage2.sh <1PasswordRepo> <1PasswordEmail>` where <1PasswordRepo>
    is the name of your 1Password instance, which you can access at
    https://<1PasswordRepo>.1password.com and <1PasswordEmail> is the
@@ -63,7 +63,7 @@ Steps:
    system, set the password, configure Git, install docker, lvm, and
    a bunch of supporting packages, then reboot the pi again.
 10. `ssh pi@$PIIP`
-11. `cd pi-server`
+11. `cd pi-server/shell`
 12. `./stage3.sh <User>` This will mount the USB drive then pull and run the
     Nextcloud and Plex docker images. <User> should be the username of the
     regular NextCloud user you created or will create (in the next step)
@@ -83,6 +83,7 @@ Steps:
     You can start populating the Movies and TV folders with material
     as you see fit.
 15. If you just configured your folders, you will need to run
-    `./stage4.sh <User>`, which will launch Plex.
+    `./stage4.sh <User>`, which will launch Plex. Where `<User>` is the
+    username of the Plex user you created in the previous step.
 16. Enjoy!
 
