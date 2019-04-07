@@ -5,6 +5,9 @@ Dependencies / Assumptions:
    systems.
 2. You are using a US locale and keyboard; adjust the keyboard file
    appropriately if this is not the case.
+3. You are in US/Central timezone; adjust stage2.sh appropriately if
+   this is not the case. Given some demand, I could easily make this
+   configurable.
 3. You are using 1Password for password management, specifically the
    modern online instance, not the old stand alone software. I would
    be interested in patches that provide support for other password

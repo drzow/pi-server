@@ -8,6 +8,15 @@ if [ -z "${OPEMAIL}" ]; then
   exit 1
 fi
 
+# Set the timezone
+# From https://serverfault.com/questions/94991/setting-the-timezone-with-an-automated-script
+TIMEZONE="US/Central"
+sudo /bin/sh -c 'echo $TIMEZONE > /etc/timezone'
+sudo cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
+
+# Install and run ntp
+sudo apt install -y ntp
+
 # Update the system
 sudo apt-get update
 sudo apt-get -y upgrade
