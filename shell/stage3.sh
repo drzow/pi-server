@@ -15,17 +15,22 @@ if ! mount | grep usbdrive; then
   sudo mount /mnt/usbdrive
 fi
 
+# Make sure Docker is running
+while ! systemctl status docker | grep "Active: active"; do
+  sleep 5
+done
+
 # Download nextcloud docker image
 docker pull ownyourbits/nextcloudpi-armhf
 # Create nextcloud docker image
 IP=$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
 if ! docker ps -a | grep nextcloudpi-armhf; then
-  docker create -d -p 4443:4443 -p 443:443 -p 80:80 -v /mnt/usbdrive:/data \
+  docker create -p 4443:4443 -p 443:443 -p 80:80 -v /mnt/usbdrive:/data \
     --name nextcloudpi --restart unless-stopped ownyourbits/nextcloudpi-armhf ${IP}
 fi
 # Start nextcloud docker image
 if ! docker ps | grep nextcloudpi-armhf; then
-  docker start nextcloudpi
+  docker start --detach nextcloudpi
 fi
 
 if sudo test -d /mnt/usbdrive/nextcloud/data/${USER}/files/Media/Plex/Config; then
