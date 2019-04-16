@@ -1,7 +1,11 @@
 #!/bin/bash
-USER=$1
-if [ -z "$USER" ]; then
-  echo "Usage: $0 <User>"
+
+# Get command line arguments
+REPOSITORY=$1
+OPEMAIL=$2
+USER=$3
+if [ -z "${USER}" ]; then
+  echo "Usage: $0 <1PasswordRepo> <1PasswordEmail> <User>"
   exit 1
 fi
 
@@ -13,6 +17,14 @@ if ! grep usbdrive /etc/fstab; then
 fi
 if ! mount | grep usbdrive; then
   sudo mount /mnt/usbdrive
+fi
+# Mount the backup drive
+sudo mkdir -p /mnt/backups
+if ! grep backups /etc/fstab; then
+  sudo /bin/bash -c 'echo -e "/dev/nc_data/backups\t/mnt/backups\tbtrfs\tdefaults,noatime\t0\t2" >> /etc/fstab'
+fi
+if ! mount | grep backups; then
+  sudo mount /mnt/backups
 fi
 
 # Make sure Docker is running
@@ -30,10 +42,10 @@ if ! docker ps -a | grep nextcloudpi-armhf; then
 fi
 # Start nextcloud docker image
 if ! docker ps | grep nextcloudpi-armhf; then
-  docker start --detach nextcloudpi
+  docker start nextcloudpi
 fi
 
 if sudo test -d /mnt/usbdrive/nextcloud/data/${USER}/files/Media/Plex/Config; then
-  ./stage4.sh ${USER}
+  ./stage4.sh ${RESPOSITORY} ${OPEMAIL} ${USER}
 fi
 

@@ -1,4 +1,4 @@
-pi-server: Setup a Raspberry Pi to run Nextcloud and Plex
+pi-server: Setup a Raspberry Pi to run Nextcloud, Plex, and Samba
 --
 Dependencies / Assumptions:
 1. This was developed on Rasperian 9. It may work on other Debian-based
@@ -14,7 +14,11 @@ Dependencies / Assumptions:
    managers in a plugable fashion.
 4. You will need a "Nextcloud" server entry with a strong password in
    the password field. I recommend 32 characters, alphanumeric (no
-   symbols, which might get interpreted by the shell).
+   symbols, which might get interpreted by the shell). The entry should
+   also have a section titled "Backups" with a field labeled "username"
+   containing the backups username you wish to use and a field labeled
+   "password" with a strong password (as above). The password may be
+   hidden.
 5. You will need a "GitHub" login entry in 1Password with your username
    in its normal field and an "Additional Info" section with three
    key:value pairs:
@@ -27,8 +31,9 @@ Dependencies / Assumptions:
    scripts. If others are not interested in that, it could be made
    optional.
 7. The USB Drive is set up ahead of time as a LVM volume with a
-   volume group called `nc_data`, a logical volume called `lv_data`
-   and then formatted with a BTRFS file system.
+   volume group called `nc_data`, a logical volume called `lv_data`,
+   another logical volume called `backups`, 
+   and both are formatted with a BTRFS file system.
    1. `sudo fdisk /dev/sda` (or whatever the block device is for your
       drive -- you can also use the /dev/disk/by-id/<ID> or any equalvalent
       path.
@@ -38,10 +43,16 @@ Dependencies / Assumptions:
    4. Write the updated partition table: `w`
    5. Make the partition an LVM physical volume: `sudo pvcreate /dev/sda1`
    6. Create the volume group: `sudo vgcreate nc_data /dev/sda1`
-   7. Create the logical volume:
-      `sudo lvcreate --extents 100%FREE --name lv_data nc_data`
+   7. Create the logical lv_data volume:
+      `sudo lvcreate --size <VolumeSize>[KMGTPE] --name lv_data nc_data`
+      Make the size however much you want to devote to Nextcloud/Plex.
    8. Create the BTR file system on it:
       `sudo mkfs.btrfs /dev/nc_data/lv_data`
+   9. Create the logical backup volume:
+      `sudo lvcreate --extents 100%FREE --name backups nc_data`
+      This uses the rest of the physical volume for backups.
+   10. Create the BTR file system on it:
+       `sudo mkfs.btrfs /dev/nc_data/backups`
 
 --
 
@@ -63,27 +74,30 @@ Steps:
 7. If you did not set up ssh back in step (2), you should do so now, then
    `ssh pi@$PIIP`
 8. `cd pi-server/shell`
-9. `./stage2.sh <1PasswordRepo> <1PasswordEmail>` where <1PasswordRepo>
-   is the name of your 1Password instance, which you can access at
-   https://<1PasswordRepo>.1password.com and <1PasswordEmail> is the
-   email address used as the username for your 1Password account. As
-   the second stage runs, it will prompt you for your account Secret
-   Key, which is like a 40 character alphanumeric key with sections
-   separated by dashes, then it will prompt you for your master password,
-   which is the one you use all the time to unlock 1Password. It is
-   best to be ssh'ed into your pi from a desktop where you have 1Password
-   access such that you can copy both the secret key and your master
+9. `./stage2.sh <1PasswordRepo> <1PasswordEmail>` 
    password from your vault into your terminal. Stage 2 will update the
    system, set the password, configure Git, install docker, lvm, and
    a bunch of supporting packages, then reboot the pi again.
 10. `ssh pi@$PIIP`
 11. `cd pi-server/shell`
-12. `./stage3.sh <User>` This will mount the USB drive then pull and run the
-    Nextcloud and Plex docker images. <User> should be the username of the
+12. `./stage3.sh <1PasswordRepo> <1PasswordEmail> <User>`
+    where <1PasswordRepo>
+    is the name of your 1Password instance, which you can access at
+    https://<1PasswordRepo>.1password.com and <1PasswordEmail> is the
+    email address used as the username for your 1Password account. As
+    the fourth stage runs, it will prompt you for your account Secret
+    Key, which is like a 40 character alphanumeric key with sections
+    separated by dashes, then it will prompt you for your master password,
+    which is the one you use all the time to unlock 1Password. It is
+    best to be ssh'ed into your pi from a desktop where you have 1Password
+    access such that you can copy both the secret key and your master
+    password from your vault into your terminal.
+    The third stage will mount the USB drive then pull and run the
+    Nextcloud docker image. <User> should be the username of the
     regular NextCloud user you created or will create (in the next step)
     whose account will hold all of your Plex media.
 13. If you previously set up NextCloud, stage 4 will run for you
-    automatically, launch plex, and you are done! Otherwise, you can
+    automatically, launch plex and samba, and you are done! Otherwise, you can
     now go to https://$PIIP:4443 to set up NextCloudPi. Create a
     regular user, then log in as them, create a `Media` folder
     from your top-level page (so you should see it between the
@@ -97,7 +111,8 @@ Steps:
     You can start populating the Movies and TV folders with material
     as you see fit.
 15. If you just configured your folders, you will need to run
-    `./stage4.sh <User>`, which will launch Plex. Where `<User>` is the
-    username of the Plex user you created in the previous step.
+    `./stage4.sh <1PasswordRepo> <1PasswordEmail> <User>`,
+    which will launch Plex. Where the arguments are as described for
+    stage3.sh .
 16. Enjoy!
 
