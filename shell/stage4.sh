@@ -19,7 +19,7 @@ if ! [ -x /usr/local/bin/op ]; then
   gpg --receive-keys 3FEF9748469ADBE15DA7CA80AC2D62742012EA22
   gpg --verify op.sig op
   sudo mv op /usr/local/bin
-}
+fi
 # Set up 1Password
 SESSIONTOKEN=$(op signin ${REPOSITORY}.1password.com ${OPEMAIL} --output=raw)
 
@@ -73,13 +73,13 @@ fi
 docker pull trnape/rpi-samba
 # Create samba docker image
 if ! docker ps -a | grep samba; then
-  BUUSER=$(op get item Nextcloud --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.name == "Backups") | .fields | .[] | select(.n == "username") | .v' | sed -e 's/^"//' -e 's/"$//')
-  BUPASS=$(op get item Nextcloud --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.name == "Backups") | .fields | .[] | select(.n == "password") | .v' | sed -e 's/^"//' -e 's/"$//')
+  BUUSER=$(op get item Nextcloud --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Backups") | .fields | .[] | select(.t == "username") | .v' | sed -e 's/^"//' -e 's/"$//')
+  BUPASS=$(op get item Nextcloud --session=$SESSIONTOKEN | jq '.details.sections | .[] | select(.title == "Backups") | .fields | .[] | select(.t == "password") | .v' | sed -e 's/^"//' -e 's/"$//')
   docker create --name samba -p 445:445 \
     -v /mnt/backups:/share/backups \
+    trnape/rpi-samba \
     -u "${BUUSER}:${BUPASS}" \
-    -s "Backup directory:/share/backups:rw:${BUUSER}" \
-    trnape/rpi-samba
+    -s "Backup directory:/share/backups:rw:${BUUSER}"
 fi
 # Start samba docker image
 if ! docker ps | grep samba; then
