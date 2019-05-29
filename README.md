@@ -74,9 +74,9 @@ Steps:
 7. If you did not set up ssh back in step (2), you should do so now, then
    `ssh pi@$PIIP`
 8. `cd pi-server/shell`
-9. `./stage2.sh <1PasswordRepo> <1PasswordEmail>` 
-   password from your vault into your terminal. Stage 2 will update the
-   system, set the password, configure Git, install docker, lvm, and
+9. `./stage2.sh <hostname> <domain>` 
+   Stage 2 will set the hostname and domain, update the
+   system, configure Git, install docker, lvm, and
    a bunch of supporting packages, then reboot the pi again.
 10. `ssh pi@$PIIP`
 11. `cd pi-server/shell`
@@ -85,14 +85,15 @@ Steps:
     is the name of your 1Password instance, which you can access at
     https://<1PasswordRepo>.1password.com and <1PasswordEmail> is the
     email address used as the username for your 1Password account. As
-    the fourth stage runs, it will prompt you for your account Secret
+    the third stage runs, it will prompt you for your account Secret
     Key, which is like a 40 character alphanumeric key with sections
     separated by dashes, then it will prompt you for your master password,
     which is the one you use all the time to unlock 1Password. It is
     best to be ssh'ed into your pi from a desktop where you have 1Password
     access such that you can copy both the secret key and your master
     password from your vault into your terminal.
-    The third stage will mount the USB drive then pull and run the
+    The third stage will set the password,
+    mount the USB drive then pull and run the
     Nextcloud docker image. <User> should be the username of the
     regular NextCloud user you created or will create (in the next step)
     whose account will hold all of your Plex media.
