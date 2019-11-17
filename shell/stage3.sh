@@ -46,6 +46,6 @@ if ! docker ps | grep nextcloudpi-armhf; then
 fi
 
 if sudo test -d /mnt/usbdrive/nextcloud/data/${USER}/files/Media/Plex/Config; then
-  ./stage4.sh ${RESPOSITORY} ${OPEMAIL} ${USER}
+  ./stage4.sh ${REPOSITORY} ${OPEMAIL} ${USER}
 fi
 
