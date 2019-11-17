@@ -11,12 +11,12 @@ fi
 
 # Get the 1Password command line tool
 if ! [ -x /usr/local/bin/op ]; then
-  OPVER=v0.5.5
+  OPVER=v0.8.0
   wget https://cache.agilebits.com/dist/1P/op/pkg/${OPVER}/op_linux_arm_${OPVER}.zip
   # Install it
   unzip -o op_linux_arm_${OPVER}.zip
   sudo apt-get -y install dirmngr jq
-  gpg --receive-keys 3FEF9748469ADBE15DA7CA80AC2D62742012EA22
+  gpg --keyserver hkps://keyserver.ubuntu.com --receive-keys 3FEF9748469ADBE15DA7CA80AC2D62742012EA22
   gpg --verify op.sig op
   sudo mv op /usr/local/bin
 fi
