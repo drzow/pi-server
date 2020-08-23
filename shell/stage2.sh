@@ -26,7 +26,7 @@ sudo apt-get update
 sudo apt-get -y dist-upgrade
 
 # Install lvm and stuff docker will want
-sudo apt -y install btrfs-tools debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2
+sudo apt -y install btrfs-tools debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2 apt-transport-https
 
 # Install Docker
 curl -sSL get.docker.com | sh
