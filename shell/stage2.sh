@@ -23,6 +23,7 @@ sudo apt install -y ntp
 
 # Update the system
 sudo apt-get update
+echo TODO: Avoid prompt in upgrade process
 sudo apt-get -y dist-upgrade
 
 # Install lvm and stuff docker will want
