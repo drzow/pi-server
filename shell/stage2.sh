@@ -24,7 +24,7 @@ sudo apt install -y ntp
 # Update the system
 sudo apt-get update
 echo TODO: Avoid prompt in upgrade process
-sudo apt-get -y dist-upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade
 sudo apt autoremove
 
 # Install lvm and stuff docker will want
