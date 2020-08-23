@@ -1,7 +1,8 @@
 pi-server: Setup a Raspberry Pi to run Nextcloud, Plex, and Samba
 --
 Dependencies / Assumptions:
-1. This was developed on Rasperian 9. It may work on other Debian-based
+1. This was developed on Rasperian 9. Testing is currently underway
+   on Rasperian 10. It may work on other Debian-based
    systems.
 2. You are using a US locale and keyboard; adjust the keyboard file
    appropriately if this is not the case.
@@ -61,7 +62,7 @@ Steps:
    Rasperian, 2018-11-13 version.
 2. If your image has not been configured to start ssh automatically, log
    in on console. Otherwise, I recommend copying your ssh key onto the pi
-   with `ssh-copy-id -i .ssh/id_ecdsa.pub pi@$PIIP` where you may need
+   with `ssh-copy-id -i ~/.ssh/id_ecdsa.pub pi@$PIIP` where you may need
    to use a different public keyfile, and $PIIP is the IP of your PI (or
    hostname if that resolves on your network). The IP displays on the
    console when the PI boots, otherwise you can do a websearch for tools
