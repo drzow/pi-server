@@ -9,8 +9,8 @@ if [ -z "${DOMAIN}" ]; then
 fi
 
 # Set the hostname and domain
-sudo hostnamectl set-hostname "${HOSTNAME}"
 sudo sed -i -- 's/raspberrypi/${HOSTNAME}/g' /etc/hosts
+sudo hostnamectl set-hostname "${HOSTNAME}"
 
 # Set the timezone
 # From https://serverfault.com/questions/94991/setting-the-timezone-with-an-automated-script
