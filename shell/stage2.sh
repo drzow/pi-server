@@ -18,6 +18,10 @@ TIMEZONE="US/Central"
 sudo /bin/sh -c 'echo $TIMEZONE > /etc/timezone'
 sudo cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
+# Disable IPv6 (you can take this out if it works for you)
+sudo -E sh -c 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf'
+sudo sysctl -p
+
 # Install and run ntp
 sudo apt install -y ntp
 
