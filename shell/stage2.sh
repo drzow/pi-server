@@ -24,12 +24,11 @@ sudo apt install -y ntp
 # Update the system
 sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade
-sudo apt autoremove
+sudo apt -y autoremove
 
 # Install lvm and stuff docker will want
-echo TODO: Avoid prompt in upgrade process
 echo TODO: This causes docker install to fail
-sudo apt -y install btrfs-progs debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2 apt-transport-https
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2 apt-transport-https
 
 # Install Docker
 curl -sSL get.docker.com | sh
