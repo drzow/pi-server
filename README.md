@@ -71,12 +71,12 @@ Steps:
 4. `git clone https://github.com/drzow/pi-server.git` (or your fork
    thereof)
 5. `cd pi-server/shell`
-6. `./stage1.sh` This will reboot your pi.
+6. `./stage1.sh <hostname> <domain>` This will reboot your pi.
 7. If you did not set up ssh back in step (2), you should do so now, then
    `ssh pi@$PIIP`
 8. `cd pi-server/shell`
-9. `./stage2.sh <hostname> <domain>` 
-   Stage 2 will set the hostname and domain, update the
+9. `./stage2.sh` 
+   Stage 2 will update the
    system, configure Git, install docker, lvm, and
    a bunch of supporting packages, then reboot the pi again.
 10. `ssh pi@$PIIP`

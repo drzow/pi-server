@@ -1,17 +1,5 @@
 #!/bin/bash
 
-# Get command line arguments
-HOSTNAME=$1
-DOMAIN=$2
-if [ -z "${DOMAIN}" ]; then
-  echo "Usage: $0 <hostname> <domain>"
-  exit 1
-fi
-
-# Set the hostname and domain
-sudo sed -i -- 's/raspberrypi/${HOSTNAME}/g' /etc/hosts
-sudo hostnamectl set-hostname "${HOSTNAME}"
-
 # Set the timezone
 # From https://serverfault.com/questions/94991/setting-the-timezone-with-an-automated-script
 TIMEZONE="US/Central"
