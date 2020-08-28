@@ -10,11 +10,12 @@ sudo cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 sudo -E sh -c 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf'
 sudo sysctl -p
 
-# Substitute a close mirror for raspbian.raspberrypi.org
-sudo sed -i -- 's/raspbian.raspberrypi.org/plug-mirror.rcac.purdue.edu/g' /etc/apt/sources.list
-
 # Install and run ntp
 sudo apt install -y ntp
+
+# Substitute a close mirror for raspbian.raspberrypi.org
+# We should immediately update after doing this
+sudo sed -i -- 's/raspbian.raspberrypi.org/plug-mirror.rcac.purdue.edu/g' /etc/apt/sources.list
 
 # Update the system
 sudo apt-get update
