@@ -29,7 +29,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs debootstrap l
 sleep 60
 
 # Install Docker
-curl -sSL get.docker.com | sh
+#curl -sSL get.docker.com | sh
+sh get-docker.sh
 
 # Add pi to the docker group
 sudo usermod -a -G docker pi
