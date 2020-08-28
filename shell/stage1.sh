@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -e
 
 # Get command line arguments
 HOSTNAME=$1

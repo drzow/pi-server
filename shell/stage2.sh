@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # Set the timezone
 # From https://serverfault.com/questions/94991/setting-the-timezone-with-an-automated-script
