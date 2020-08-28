@@ -21,12 +21,13 @@ sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade
 sudo apt -y autoremove
 
-# Install lvm and stuff docker will want
-echo TODO: This causes docker install to fail
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2 apt-transport-https
-
 # Install Docker
 curl -sSL get.docker.com | sh
+
+# Install lvm and stuff docker will want
+#echo TODO: This causes docker install to fail
+# Trying flipping this around
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2 apt-transport-https
 
 # Add pi to the docker group
 sudo usermod -a -G docker pi
