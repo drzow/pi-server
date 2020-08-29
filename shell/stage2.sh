@@ -22,8 +22,12 @@ sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade
 sudo apt -y autoremove
 
-# Install lvm and stuff docker will want
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs debootstrap lxc rinse fuse fuse-zip fuse2fs fusedav fuseiso fusesmb lvm2 apt-transport-https
+# Install stuff docker will want
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install debootstrap lxc rinse apt-transport-https
+# Install fuse stuff for docker
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install fuse fuse-zip fuse2fs fusedav fuseiso fusesmb
+# Install lvm 
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs lvm2
 
 # Docker seems to fail if installed in rapid succession
 sleep 60
