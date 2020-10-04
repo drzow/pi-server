@@ -23,18 +23,12 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade
 sudo apt -y autoremove
 
 # Install stuff docker will want
-echo sudo DEBIAN_FRONTEND=noninteractive apt-get -y install debootstrap lxc rinse apt-transport-https
 # Install fuse stuff for docker
-echo sudo DEBIAN_FRONTEND=noninteractive apt-get -y install fuse fuse-zip fuse2fs fusedav fuseiso fusesmb
 # Install lvm 
-echo sudo DEBIAN_FRONTEND=noninteractive apt-get -y install btrfs-progs lvm2
-
-# Docker seems to fail if installed in rapid succession
-#sleep 60
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install debootstrap lxc rinse apt-transport-https fuse fuse-zip fuse2fs fusedav fuseiso fusesmb btrfs-progs lvm2
 
 # Install Docker
-#curl -sSL get.docker.com | sh
-echo sh get-docker.sh
+curl -sSL get.docker.com | sh
 
 # Add pi to the docker group
 echo sudo usermod -a -G docker pi
