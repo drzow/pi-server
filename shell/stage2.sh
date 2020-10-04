@@ -31,7 +31,10 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y install debootstrap lxc rinse apt
 curl -sSL get.docker.com | sh
 
 # Add pi to the docker group
-echo sudo usermod -a -G docker pi
+sudo usermod -a -G docker pi
+
+# Set wifi region
+sudo -E sh -c 'echo "country=US" >> /etc/wpa_supplicant/wpa_supplicant.conf'
 
 # Reboot so kernel modules for docker and lvm will run
 echo sudo reboot
