@@ -35,6 +35,7 @@ sudo usermod -a -G docker pi
 
 # Set wifi region
 sudo -E sh -c 'echo "country=US" >> /etc/wpa_supplicant/wpa_supplicant.conf'
+sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
 
 # Reboot so kernel modules for docker and lvm will run
 sudo reboot
