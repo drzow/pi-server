@@ -1,9 +1,10 @@
 pi-server: Setup a Raspberry Pi to run Nextcloud, Plex, and Samba
 --
 Dependencies / Assumptions:
-1. This was developed on Rasperian 9. Testing is currently underway
-   on Rasperian 10. It may work on other Debian-based
-   systems.
+1. This was developed on Rasperian 9. The March 2020 version of
+   Raspberry Pi OS 10 had known issues. Testing is currently underway
+   on the August release of Raspberry Pi OS 10.
+   It may work on other Debian-based systems.
 2. You are using a US locale and keyboard; adjust the keyboard file
    appropriately if this is not the case.
 3. You are in US/Central timezone; adjust stage2.sh appropriately if
